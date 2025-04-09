@@ -1,2 +1,5 @@
 aiogram
 python-dotenv
+pandas
+numpy
+openpyxl
