@@ -12,7 +12,7 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 from aiogram.filters import Command
 import asyncio
 from io import BytesIO
-from config import BOT_TOKEN
+from config import BOT_TOKEN, ADMIN_ID
 
 warnings.filterwarnings('ignore')
 
@@ -20,6 +20,8 @@ warnings.filterwarnings('ignore')
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
 
+def is_admin(user_id: int):
+    return user_id == ADMIN_ID
 
 # Your Rasch Model implementation (unchanged)
 class FastRaschModel:
@@ -102,6 +104,8 @@ rasch_keyboard = ReplyKeyboardMarkup(
 # Handlers
 @dp.message(Command("start", "help"))
 async def send_welcome(message: types.Message):
+    if not is_admin(message.from_user.id):
+        return await message.answer("Assalomu Alaykum!\n❌ Siz admin emassiz!\n Shuning uchun bizning botdan foydalana olmaysiz!")
     await message.answer(
         "Rasch Model Bot ga Xush Kelibsiz! \nQuyidagi 'Rasch Result' tugmasini bosing va menga analiz qilish uchun Excel file yuboring.",
         reply_markup=rasch_keyboard
@@ -110,11 +114,15 @@ async def send_welcome(message: types.Message):
 
 @dp.message(lambda message: message.text == "Rasch Result")
 async def request_file(message: types.Message):
+    if not is_admin(message.from_user.id):
+        return await message.answer("❌ Siz admin emassiz!\n Shuning uchun bizning botdan foydalana olmaysiz!")
     await message.answer("Iltimos Excel file yuboring.")
 
 
 @dp.message(lambda message: message.document is not None)
 async def handle_document(message: types.Message):
+    if not is_admin(message.from_user.id):
+        return await message.answer("❌ Siz admin emassiz!\n Shuning uchun bizning botdan foydalana olmaysiz!")
     if not message.document.file_name.endswith(('.xlsx', '.xls')):
         await message.answer("Iltimos Excel file yuboring (.xlsx or .xls)")
         return
@@ -218,6 +226,8 @@ async def handle_document(message: types.Message):
 
 @dp.message()
 async def handle_other_messages(message: types.Message):
+    if not is_admin(message.from_user.id):
+        return await message.answer("❌ Siz admin emassiz!\n Shuning uchun bizning botdan foydalana olmaysiz!")
     await message.answer("Quyidagi 'Rasch Result' tugmasini bosing va menga analiz qilish uchun Excel file yuboring.", reply_markup=rasch_keyboard)
 
 
