@@ -6,9 +6,10 @@ load_dotenv()
 
 # O'zgaruvchilarni olish
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-ADMIN_ID = int(os.getenv("ADMIN_ID", "0"))
+ADMIN_IDS = [int(admin_id.strip()) for admin_id in os.getenv("ADMIN_IDS", "").split(',') if admin_id.strip().isdigit()]
+
 
 # Tekshirish
 print(f"Bot token: {BOT_TOKEN}")
-print(f"Admin ID: {ADMIN_ID}")
+print(f"Admin ID: {ADMIN_IDS}")
 

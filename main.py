@@ -12,7 +12,7 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 from aiogram.filters import Command
 import asyncio
 from io import BytesIO
-from config import BOT_TOKEN, ADMIN_ID
+from config import BOT_TOKEN, ADMIN_IDS
 
 warnings.filterwarnings('ignore')
 
@@ -21,7 +21,7 @@ bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
 
 def is_admin(user_id: int):
-    return user_id == ADMIN_ID
+    return user_id in ADMIN_IDS
 
 # Your Rasch Model implementation (unchanged)
 class FastRaschModel:
