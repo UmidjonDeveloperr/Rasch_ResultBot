@@ -174,7 +174,14 @@ async def handle_document(message: types.Message):
         print("Calculating scores...")
         df['Theta'] = model.person_ability
         df['T_score'] = 50 + 10 * zscore(df['Theta'])
+
+        noise = np.random.uniform(-0.01, 0.01, size=len(df))
+        df['T_score'] += noise
+
         df['T_score'] = np.round(df['T_score'], 2)
+
+
+
         # Determine subject type based on max possible score
         max_possible = len(response_cols)
         subject_type = "1-fan" if max_possible >= 45 else "2-fan"
