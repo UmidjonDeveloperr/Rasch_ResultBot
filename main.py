@@ -175,7 +175,7 @@ async def handle_document(message: types.Message):
         df['Theta'] = model.person_ability
         df['T_score'] = 50 + 10 * zscore(df['Theta'])
 
-        df['T_score'] = df['T_score'] + np.random.uniform(-0.5, 0.5, len(df))
+        df['T_score'] = df['T_score'] + np.random.uniform(-0.05, 0.05, len(df))
         df['T_score'] = df['T_score'].round(decimals=2)
  
 
